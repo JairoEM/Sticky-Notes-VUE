@@ -1,5 +1,7 @@
 # Sticky-Notes-VUE
 
+Tasks Management on VUE
+
 ## Project setup
 ```
 npm install

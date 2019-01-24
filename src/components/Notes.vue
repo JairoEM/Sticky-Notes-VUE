@@ -49,14 +49,13 @@
                 <div class="col-sm-12 col-md-auto">
                     <small>
                         <span>{{ tasks.length }} pending tasks of a total {{ taskToDo() }} | </span>
-                        <span class="text-warning"><b>Delete comspanleted tasks</b></span>
+                        <span class="text-warning" v-on:click="deleteCompletedTasks"><b>Delete completed tasks</b></span>
                     </small>
                 </div>
             </div>
         </section>
 
         <div class="dropdown-divider bg-secondary"></div>
-
         <br>
 
         <div class="row">
@@ -65,13 +64,13 @@
             </div>
             <div class="col-12">
                 <ul>
-                    <li v-for="task in priorityFilter"  style="list-style:none;">
+                    <li v-for="(task, index) in priorityFilter" style="list-style:none;">
                         <div class="row justify-content-between">
                             <div class="col-auto">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <span v-if="task.status"><img src="../../public/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg"></span>
-                                        <span v-else><img src="../../public/incompleted.svg" alt="" height="50px" width="auto" style="float:left;"></span>
+                                        <span v-if="task.status"><img src="../../public/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
+                                        <span v-else><img src="../../public/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="row">
@@ -92,7 +91,7 @@
                                                 <span>
                                                     <!-- LOW -->
                                                     <button v-if="task.priority == 'Low'" type="button" class="btn btn-primary btn-sm">Low</button>
-                                                    <button v-else type="button" class="btn btn-secondary btn-sm">Low</button>
+                                                    <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)">Low</button>
                                                     <span>&nbsp;</span>
 
                                                     <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
@@ -100,7 +99,7 @@
 
                                                     <!-- MEDIUM -->
                                                     <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
-                                                    <button v-else type="button" class="btn btn-secondary btn-sm">Medium</button>
+                                                    <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
                                                     <span>&nbsp;</span>
 
                                                     <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
@@ -108,7 +107,7 @@
 
                                                     <!-- HIGH -->
                                                     <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High</button>
-                                                    <button v-else type="button" class="btn btn-secondary btn-sm">High</button>
+                                                    <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High</button>
                                                     <span>&nbsp;</span>
 
                                                     <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
@@ -123,9 +122,9 @@
                             <div class="col-auto">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <img src="../../public/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg">                                
+                                        <img src="../../public/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task.index)">                                
                                     </div>
-                                    <div class="col-1"></div>
+                                    <div class="col-1"></div> 
                                 </div>
                             </div>    
                         </div>                     
@@ -134,34 +133,77 @@
             </div>
         </div>
 
-
-
-
-
-
-
-
-        <!-- NEED LAYOUT, REQUESTED TASKS -->
+        <br>
+        <div class="dropdown-divider bg-secondary"></div>
         <br>
 
-        <h2>Show Tasks</h2>
-        <input type="checkbox" id="completed" value="Completed" v-model="checkedStatus">
-        <label for="jack">Completed Tasks</label>
-        <br>
-        <input type="checkbox" id="incompleted" value="Incompleted" v-model="checkedStatus"> 
-        <label for="john">Incompleted Tasks</label>
+        <!-- TASKS DIVIDED BY STATUS -->
+        <section class="container">
+            <div class="col-12" style="text-align:center;">
+                <h2>Tasks Status</h2>
+            </div>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Completed</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Incompleted</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <ul>
+                        <li v-for="task in tasks" style="list-style:none;">
+                            <h3 v-if="task.status">{{ task.order }}</h3>
+                            <!-- <p>Priority: {{ auxTask.priority }}</p>
+                            <p>Date: {{ auxTask.date }}</p>
+                            <p>Status: 
+                                <span v-if="auxTask.status">Completed</span>
+                                <span v-else>Not Completed</span>
+                            </p> -->
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <ul>
+                        <li v-for="task in tasks" style="list-style:none;">
+                            <h3 v-if="task.status == false">{{ task.order }}</h3>
+                            <!-- <p>Priority: {{ auxTask.priority }}</p>
+                            <p>Date: {{ auxTask.date }}</p>
+                            <p>Status: 
+                                <span v-if="auxTask.status">Completed</span>
+                                <span v-else>Not Completed</span>
+                            </p> -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         
-        <ul>
-            <li v-for="auxTask in checkedTask">
-                <h3>{{ auxTask.order }}</h3>
-                <p>Priority: {{ auxTask.priority }}</p>
-                <p>Date: {{ auxTask.date }}</p>
-                <p>Status: 
-                    <span v-if="auxTask.status">Completed</span>
-                    <span v-else>Not Completed</span>
-                </p>
-            </li>
-        </ul>
+
+        <!-- NOT SHOWING, CHECKBOX GROUP, ORDER BY STATUS -->
+        <!-- <div class="row">
+            <div class="col-2">
+                <input type="checkbox" id="completed" value="Completed" v-model="checkedStatus">
+                <label for="jack">Completed Tasks</label>
+                <br>
+                <input type="checkbox" id="incompleted" value="Incompleted" v-model="checkedStatus"> 
+                <label for="john">Incompleted Tasks</label>
+            </div>
+            <div class="col-auto">
+                <ul>
+                    <li v-for="auxTask in checkedTask">
+                        <h3>{{ auxTask.order }}</h3>
+                        <p>Priority: {{ auxTask.priority }}</p>
+                        <p>Date: {{ auxTask.date }}</p>
+                        <p>Status: 
+                            <span v-if="auxTask.status">Completed</span>
+                            <span v-else>Not Completed</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div> -->
+        <br>
     </div>
 </template>
 
@@ -173,16 +215,16 @@
             return{
                 tasks: [
                     {
-                        order: "Clean the dishes",
-                        priority: "Low",
-                        date: new Date().toLocaleString(),
-                        status: false
-                    },
-                    {
                         order: "Take the dog out",
                         priority: "High",
                         date: new Date().toLocaleString(),
                         status: true
+                    },
+                    {
+                        order: "Clean the dishes",
+                        priority: "Low",
+                        date: new Date().toLocaleString(),
+                        status: false
                     }
                 ],
                 textNewTask: "",
@@ -194,11 +236,13 @@
         },
         methods: {
             newTask: function(event){
-                var order = this.textNewTask;
-                var date = new Date().toLocaleString();
-                var priority = "Medium";
-                var status = false;
-                this.tasks.push({order, date, priority, status});
+                if(this.textNewTask != ""){
+                    var order = this.textNewTask;
+                    var date = new Date().toLocaleString(); // .toLocaleString()
+                    var priority = "Medium";
+                    var status = false;
+                    this.tasks.push({order, date, priority, status});
+                }
             },
             taskToDo: function(){
                 var count = 0;
@@ -208,6 +252,31 @@
                     }
                 }
                 return count;
+            }, 
+            deleteTask: function(index){
+                this.tasks.splice(index, 1);
+            },
+            changeToLow: function(task){
+                task.priority = "Low";
+            },
+            changeToMedium: function(task){
+                task.priority = "Medium";
+            },
+            changeToHigh: function(task){
+                task.priority = "High";
+            },
+            changeToComplete: function(task){
+                task.status = true;
+            },
+            changeToIncomplete: function(task){
+                task.status = false;
+            },
+            deleteCompletedTasks: function(){
+                for(let i=this.tasks.length-1; i=>0; i--){
+                    if(this.tasks[i].status == true){
+                        this.tasks.splice(i, 1);
+                    }
+                }
             }
         },
         computed: {
@@ -230,7 +299,7 @@
                     }
                 }
                 return this.auxTasks;
-            },
+            },       
             priorityFilter: function(){
                 this.priorityTasks = [];
                 for(let i=0; i<this.tasks.length; i++){
@@ -250,6 +319,22 @@
                 }
                 return this.priorityTasks;
             }
+    
+                // filteredHigh: function (){
+                //     return this.tasks.filter(task => {
+                //         return task.priority.indexOf("High") > -1;
+                //     });
+                // },
+                // filteredMedium: function (){
+                //     return this.tasks.filter(task => {
+                //         return task.priority.indexOf("Medium") > -1;
+                //     });
+                // },
+                // filteredLow: function (){
+                //     return this.tasks.filter(task => {
+                //         return task.priority.indexOf("Low") > -1;
+                //     });
+                // }
         }
     }
 </script>

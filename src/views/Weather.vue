@@ -33,9 +33,6 @@
                     </ul>
                 </div>
             </div>
-
-            <button v-on:click="findCity"></button>
-
         </section> 
     <!-- <ul v-if="posts && posts.length">
         <li v-for="post of posts">
@@ -58,11 +55,11 @@ export default {
             city: ""
         }
     },
-    methods: {
-        findCity: function(){
-            console.log(this.posts[0]);
-        }
-    },
+    // methods: {
+    //     findCity: function(){
+    //         this.cityName = this.city;
+    //     }
+    // },
 
   // Fetches posts when the component is created.
     created() {

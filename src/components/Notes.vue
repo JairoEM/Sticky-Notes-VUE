@@ -34,9 +34,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-secondary text-white" id="inputGroup-sizing-default">New Task</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="What do you want to do?" v-on:keyup.enter="newTask" v-model="textNewTask">
+                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="What do you want to do?" v-on:keyup.enter="newTask" v-model="textNewTask" id="newTaskOrder">
                     </div>
-                    <!-- <input type="text" name="" v-model="textNewTask" placeholder="Insert a new tasks" v-on:keyup.enter="newTask"> -->
                 </div> 
                 <div class="col-md-2 offset-md-1 col-12">
                     <button type="button" class="btn btn-secondary btn-block" v-on:click="newTask">Create</button>
@@ -69,8 +68,8 @@
                             <div class="col-auto">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <span v-if="task.status"><img src="../../public/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
-                                        <span v-else><img src="../../public/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
+                                        <span v-if="task.status"><img src="../assets/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
+                                        <span v-else><img src="../assets/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="row">
@@ -122,7 +121,7 @@
                             <div class="col-auto">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <img src="../../public/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task.index)">                                
+                                        <img src="../assets/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task)">                                
                                     </div>
                                     <div class="col-1"></div> 
                                 </div>
@@ -132,6 +131,93 @@
                 </ul>
             </div>
         </div>
+
+        <br>
+        <div class="dropdown-divider bg-secondary"></div>
+        <br>
+
+        <!-- TASK SEEKER -->
+        <section class="container">
+            <div class="col-12" style="text-align:center;">
+                <h2>Tasks Seeker</h2>
+            </div>
+            <br>
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-secondary text-white" id="inputGroup-sizing-default">Task to Find</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="What do you want to find?" v-model="textFindTask">
+                </div>
+            </div>         
+            <div class="col-12">
+                <li v-for="task in filteredTask" style="list-style:none;">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <span v-if="task.status"><img src="../assets/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
+                                    <span v-else><img src="../assets/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <!-- ORDER -->
+                                        <!-- VARIABLE {{ task.order }} -->
+                                            <!-- <del>{{ task.order }}</del> -->
+                                        <div>
+                                            <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
+                                            <h3 v-else>{{ task.order }}</h3>
+                                        </div>               
+                                    </div>
+                                    <div class="row">
+                                        <small>
+                                            <!-- PRIORITY -->
+                                            <span>Priority: </span>
+                                            
+                                            <!-- VARIABLE {{ task.priority }} -->
+                                            <span>
+                                                <!-- LOW -->
+                                                <button v-if="task.priority == 'Low'" type="button" class="btn btn-primary btn-sm">Low</button>
+                                                <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)">Low</button>
+                                                <span>&nbsp;</span>
+
+                                                <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
+                                                <span v-else class="text-primary"> Low </span> -->
+
+                                                <!-- MEDIUM -->
+                                                <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
+                                                <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
+                                                <span>&nbsp;</span>
+
+                                                <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
+                                                <span v-else class="text-warning"> Medium </span> -->
+
+                                                <!-- HIGH -->
+                                                <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High</button>
+                                                <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High</button>
+                                                <span>&nbsp;</span>
+
+                                                <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
+                                                <span v-else class="text-danger"> High </span> -->
+                                            </span>
+                                            <span> | Date: {{ task.date }} </span>
+                                        </small>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <img src="../assets/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task)">                                
+                                </div>
+                                <div class="col-1"></div> 
+                            </div>
+                        </div>    
+                    </div> 
+                </li>
+            </div>
+        </section>
 
         <br>
         <div class="dropdown-divider bg-secondary"></div>
@@ -176,9 +262,7 @@
                     </ul>
                 </div>
             </div>
-        </section>
-
-        
+        </section>      
 
         <!-- NOT SHOWING, CHECKBOX GROUP, ORDER BY STATUS -->
         <!-- <div class="row">
@@ -228,6 +312,7 @@
                     }
                 ],
                 textNewTask: "",
+                textFindTask: "",
                 checkedStatus: [],
                 auxTasks: [],
                 priorityTasks: [],
@@ -243,6 +328,15 @@
                     var status = false;
                     this.tasks.push({order, date, priority, status});
                 }
+                document.getElementById("newTaskOrder").value = "";
+            },
+            findTask: function(event){
+                if(this.textFindTask != ""){
+                    var findOrder = this.textFindTask;
+                    return this.tasks.filter((findOrder)=>{
+                        return this.tasks.order.indexOf(findOrder) > -1;
+                    });
+                }
             },
             taskToDo: function(){
                 var count = 0;
@@ -253,8 +347,12 @@
                 }
                 return count;
             }, 
-            deleteTask: function(index){
-                this.tasks.splice(index, 1);
+            deleteTask: function(task){
+                for(let i=0; i<this.tasks.length; i++){
+                    if(this.tasks[i] == task){
+                        this.tasks.splice(i, 1);
+                    }
+                }
             },
             changeToLow: function(task){
                 task.priority = "Low";
@@ -278,6 +376,20 @@
                     }
                 }
             }
+            // minutes: function(date){
+            //     var now = new Date();
+            //     var diffMs;
+            //     var diffDays;
+            //     var diffHrs;
+            //     var diffMins;
+            //     setInterval(() => {
+            //         diffMs = (now - date); // milliseconds between now & Christmas
+            //         diffDays = Math.floor(diffMs / 86400000); // days
+            //         diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+            //         diffMins = ""+ Math.round(((diffMs % 86400000) % 3600000) / 60000);
+            //     }, 1000);
+            //     return diffMins;
+            // }
         },
         computed: {
             checkedTask: function(){
@@ -299,7 +411,16 @@
                     }
                 }
                 return this.auxTasks;
-            },       
+            },
+            filteredTask: function() {
+                if(this.textFindTask == "" || this.textFindTask == " "){
+                    return "";
+                }else{
+                    return this.tasks.filter(task => {
+                        return task.order.toLowerCase().indexOf(this.textFindTask.toLowerCase()) > -1;
+                    }); 
+                }              
+            },
             priorityFilter: function(){
                 this.priorityTasks = [];
                 for(let i=0; i<this.tasks.length; i++){
@@ -351,5 +472,9 @@
     span button{
         width: auto;
         font-size: 10px !important;
+    }
+
+    li h3::first-letter {
+        text-transform: uppercase;
     }
 </style>

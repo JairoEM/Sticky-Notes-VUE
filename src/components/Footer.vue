@@ -4,7 +4,7 @@
             <p>Project made by Jairo Eduardo Machado</p>
             <p style="margin:-0.5% 0;">You can see that project and many others on my 
                 <a target=”_blank” href="https://github.com/JairoEM">
-                    <img src="../../public/logoGithub.svg" height="20px" width="auto" alt="">GitHub
+                    <img src="../assets/logoGithub.svg" height="20px" width="auto" alt="">GitHub
                 </a>
             </p>
         </div>

@@ -47,8 +47,8 @@
             <div class="row  justify-content-md-start">
                 <div class="col-sm-12 col-md-auto">
                     <small>
-                        <span>{{ tasks.length }} pending tasks of a total {{ taskToDo() }} | </span>
-                        <span class="text-warning" v-on:click="deleteCompletedTasks"><b>Delete completed tasks</b></span>
+                        <span><img src="../assets/tasks.svg" alt="" height="16px" width="auto">{{ tasks.length }} pending tasks of a total {{ taskToDo() }} | </span>
+                        <span class="text-warning" v-on:click="deleteCompletedTasks"><img src="../assets/erase.svg" alt="" height="20px" width="auto"><b>Delete completed tasks</b></span>
                     </small>
                 </div>
             </div>
@@ -63,71 +63,77 @@
             </div>
             <div class="col-12">
                 <ul>
-                    <li v-for="(task, index) in priorityFilter" style="list-style:none;">
-                        <div class="row justify-content-between">
-                            <div class="col-auto">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <span v-if="task.status"><img src="../assets/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
-                                        <span v-else><img src="../assets/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="row">
-                                            <!-- ORDER -->
-                                            <!-- VARIABLE {{ task.order }} -->
-                                                <!-- <del>{{ task.order }}</del> -->
-                                            <div>
-                                                <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
-                                                <h3 v-else>{{ task.order }}</h3>
-                                            </div>               
+                    <transition-group name="custom-classes-transition" 
+                        enter-active-class="animated bounceInLeft"
+                        leave-active-class="animated bounceOutRight">
+
+                        <li v-for="task in priorityFilter" v-bind:key="task" style="list-style:none;">
+                            <div class="row justify-content-between">
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <span v-if="task.status"><img src="../assets/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
+                                            <span v-else><img src="../assets/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
                                         </div>
-                                        <div class="row">
-                                            <small>
-                                                <!-- PRIORITY -->
-                                                <span>Priority: </span>
-                                                
-                                                <!-- VARIABLE {{ task.priority }} -->
-                                                <span>
-                                                    <!-- LOW -->
-                                                    <button v-if="task.priority == 'Low'" type="button" class="btn btn-primary btn-sm">Low</button>
-                                                    <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)">Low</button>
-                                                    <span>&nbsp;</span>
+                                        <div class="col-auto">
+                                            <div class="row">
+                                                <!-- ORDER -->
+                                                <!-- VARIABLE {{ task.order }} -->
+                                                    <!-- <del>{{ task.order }}</del> -->
+                                                <div>
+                                                    <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
+                                                    <h3 v-else>{{ task.order }}</h3>
+                                                </div>               
+                                            </div>
+                                            <div class="row">
+                                                <small>
+                                                    <!-- PRIORITY -->
+                                                    <span>Priority: </span>
+                                                    
+                                                    <!-- VARIABLE {{ task.priority }} -->
+                                                    <span>
+                                                        <!-- LOW -->
+                                                        <button v-if="task.priority == 'Low'" type="button" class="btn btn-primary btn-sm"><img src="../assets/down.svg" alt="" height="11px" width="auto">Low</button>
+                                                        <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)"><img src="../assets/down.svg" alt="" height="11px" width="auto">Low</button>
+                                                        <span>&nbsp;</span>
 
-                                                    <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
-                                                    <span v-else class="text-primary"> Low </span> -->
+                                                        <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
+                                                        <span v-else class="text-primary"> Low </span> -->
 
-                                                    <!-- MEDIUM -->
-                                                    <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
-                                                    <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
-                                                    <span>&nbsp;</span>
+                                                        <!-- MEDIUM -->
+                                                        <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
+                                                        <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
+                                                        <span>&nbsp;</span>
 
-                                                    <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
-                                                    <span v-else class="text-warning"> Medium </span> -->
+                                                        <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
+                                                        <span v-else class="text-warning"> Medium </span> -->
 
-                                                    <!-- HIGH -->
-                                                    <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High</button>
-                                                    <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High</button>
-                                                    <span>&nbsp;</span>
+                                                        <!-- HIGH -->
+                                                        <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High<img src="../assets/up.svg" alt="" height="11px" width="auto"></button>
+                                                        <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High<img src="../assets/up.svg" alt="" height="11px" width="auto"></button>
+                                                        <span>&nbsp;</span>
 
-                                                    <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
-                                                    <span v-else class="text-danger"> High </span> -->
-                                                </span>
-                                                <span> | Date: {{ task.date }} </span>
-                                            </small>
-                                        </div> 
+                                                        <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
+                                                        <span v-else class="text-danger"> High </span> -->
+                                                    </span>
+                                                    <span>&nbsp;&nbsp;<img src="../assets/watch.svg" alt="" height="20px" width="auto"> Date: {{ task.date }} </span>
+                                                </small>
+                                            </div> 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-auto">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <img src="../assets/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task)">                                
+                                <div class="col-auto">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <img src="../assets/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task)">                                
+                                        </div>
+                                        <div class="col-1"></div> 
                                     </div>
-                                    <div class="col-1"></div> 
-                                </div>
-                            </div>    
-                        </div>                     
-                    </li>
+                                </div>    
+                            </div>                     
+                        </li>
+
+                    </transition-group>
                 </ul>
             </div>
         </div>
@@ -151,71 +157,79 @@
                 </div>
             </div>         
             <div class="col-12">
-                <li v-for="task in filteredTask" style="list-style:none;">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <div class="row">
-                                <div class="col-auto">
-                                    <span v-if="task.status"><img src="../assets/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
-                                    <span v-else><img src="../assets/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
-                                </div>
+                <ul>
+                    <transition-group name="custom-classes-transition" 
+                        enter-active-class="animated fadeIn"
+                        leave-active-class="animated fadeOut">
+
+                        <li v-for="task in filteredTask" v-bind:key="task" style="list-style:none;">
+                            <div class="row justify-content-between">
                                 <div class="col-auto">
                                     <div class="row">
-                                        <!-- ORDER -->
-                                        <!-- VARIABLE {{ task.order }} -->
-                                            <!-- <del>{{ task.order }}</del> -->
-                                        <div>
-                                            <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
-                                            <h3 v-else>{{ task.order }}</h3>
-                                        </div>               
+                                        <div class="col-auto">
+                                            <span v-if="task.status"><img src="../assets/completed.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="changeToIncomplete(task)"></span>
+                                            <span v-else><img src="../assets/incompleted.svg" alt="" height="50px" width="auto" style="float:left;" v-on:click="changeToComplete(task)"></span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="row">
+                                                <!-- ORDER -->
+                                                <!-- VARIABLE {{ task.order }} -->
+                                                    <!-- <del>{{ task.order }}</del> -->
+                                                <div>
+                                                    <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
+                                                    <h3 v-else>{{ task.order }}</h3>
+                                                </div>               
+                                            </div>
+                                            <div class="row">
+                                                <small>
+                                                    <!-- PRIORITY -->
+                                                    <span>Priority: </span>
+                                                    
+                                                    <!-- VARIABLE {{ task.priority }} -->
+                                                    <span>
+                                                        <!-- LOW -->
+                                                        <button v-if="task.priority == 'Low'" type="button" class="btn btn-primary btn-sm">Low</button>
+                                                        <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)">Low</button>
+                                                        <span>&nbsp;</span>
+
+                                                        <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
+                                                        <span v-else class="text-primary"> Low </span> -->
+
+                                                        <!-- MEDIUM -->
+                                                        <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
+                                                        <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
+                                                        <span>&nbsp;</span>
+
+                                                        <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
+                                                        <span v-else class="text-warning"> Medium </span> -->
+
+                                                        <!-- HIGH -->
+                                                        <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High</button>
+                                                        <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High</button>
+                                                        <span>&nbsp;</span>
+
+                                                        <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
+                                                        <span v-else class="text-danger"> High </span> -->
+                                                    </span>
+                                                    <span> | Date: {{ task.date }} </span>
+                                                </small>
+                                            </div> 
+                                        </div>
                                     </div>
-                                    <div class="row">
-                                        <small>
-                                            <!-- PRIORITY -->
-                                            <span>Priority: </span>
-                                            
-                                            <!-- VARIABLE {{ task.priority }} -->
-                                            <span>
-                                                <!-- LOW -->
-                                                <button v-if="task.priority == 'Low'" type="button" class="btn btn-primary btn-sm">Low</button>
-                                                <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)">Low</button>
-                                                <span>&nbsp;</span>
-
-                                                <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
-                                                <span v-else class="text-primary"> Low </span> -->
-
-                                                <!-- MEDIUM -->
-                                                <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
-                                                <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
-                                                <span>&nbsp;</span>
-
-                                                <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
-                                                <span v-else class="text-warning"> Medium </span> -->
-
-                                                <!-- HIGH -->
-                                                <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High</button>
-                                                <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High</button>
-                                                <span>&nbsp;</span>
-
-                                                <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
-                                                <span v-else class="text-danger"> High </span> -->
-                                            </span>
-                                            <span> | Date: {{ task.date }} </span>
-                                        </small>
-                                    </div> 
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <div class="row">
                                 <div class="col-auto">
-                                    <img src="../assets/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task)">                                
-                                </div>
-                                <div class="col-1"></div> 
-                            </div>
-                        </div>    
-                    </div> 
-                </li>
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <img src="../assets/delete.svg" alt="" height="50px" width="auto" style="float:left;" class="svg" v-on:click="deleteTask(task)">                                
+                                        </div>
+                                        <div class="col-1"></div> 
+                                    </div>
+                                </div>    
+                            </div> 
+                        </li>
+
+                    </transition-group>
+                </ul>        
             </div>
         </section>
 
@@ -287,7 +301,7 @@
                 </ul>
             </div>
         </div> -->
-        <br>
+        <br>       
     </div>
 </template>
 
@@ -298,18 +312,18 @@
         data: function() {
             return{
                 tasks: [
-                    {
-                        order: "Take the dog out",
-                        priority: "High",
-                        date: new Date().toLocaleString(),
-                        status: true
-                    },
-                    {
-                        order: "Clean the dishes",
-                        priority: "Low",
-                        date: new Date().toLocaleString(),
-                        status: false
-                    }
+                    // {
+                    //     order: "Take the dog out",
+                    //     priority: "High",
+                    //     date: new Date().toLocaleString(),
+                    //     status: true
+                    // },
+                    // {
+                    //     order: "Clean the dishes",
+                    //     priority: "Low",
+                    //     date: new Date().toLocaleString(),
+                    //     status: false
+                    // }
                 ],
                 textNewTask: "",
                 textFindTask: "",
@@ -329,6 +343,9 @@
                     this.tasks.push({order, date, priority, status});
                 }
                 document.getElementById("newTaskOrder").value = "";
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             findTask: function(event){
                 if(this.textFindTask != ""){
@@ -353,21 +370,39 @@
                         this.tasks.splice(i, 1);
                     }
                 }
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             changeToLow: function(task){
                 task.priority = "Low";
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             changeToMedium: function(task){
                 task.priority = "Medium";
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             changeToHigh: function(task){
                 task.priority = "High";
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             changeToComplete: function(task){
                 task.status = true;
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             changeToIncomplete: function(task){
                 task.status = false;
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
             deleteCompletedTasks: function(){
                 for(let i=this.tasks.length-1; i=>0; i--){
@@ -375,6 +410,9 @@
                         this.tasks.splice(i, 1);
                     }
                 }
+
+                localStorage.removeItem("tasks");
+                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             }
             // minutes: function(date){
             //     var now = new Date();
@@ -440,7 +478,7 @@
                 }
                 return this.priorityTasks;
             }
-    
+            
                 // filteredHigh: function (){
                 //     return this.tasks.filter(task => {
                 //         return task.priority.indexOf("High") > -1;
@@ -456,7 +494,10 @@
                 //         return task.priority.indexOf("Low") > -1;
                 //     });
                 // }
-        }
+        },
+        mounted: function(){
+            this.tasks = JSON.parse(localStorage.getItem("tasks"));
+        }   
     }
 </script>
 

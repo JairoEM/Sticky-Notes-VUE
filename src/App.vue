@@ -22,6 +22,7 @@
 
     <!-- MAIN CONTENT -->
     <section class="container"><router-view/></section>
+    
     <br>
 
     <!-- FOOTER -->
@@ -42,6 +43,7 @@
   }
   a {
     text-align: left;
+    text-decoration: none !important;
   }
 </style>
 

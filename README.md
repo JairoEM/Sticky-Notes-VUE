@@ -2,6 +2,11 @@
 
 Tasks Management on VUE
 
+## Project on netlify
+```
+https://stupefied-booth-971392.netlify.com/
+```
+
 ## Project setup
 ```
 npm install

@@ -10,7 +10,7 @@
             </div>
             <div class="dropdown-divider bg-secondary"></div>
             <br>
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col-md-9 col-12">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -23,23 +23,60 @@
                     <button type="button" class="btn btn-secondary btn-block" v-on:click="findCity">Find It</button>
                     <br>
                 </div>        
-            </div> -->
+            </div>
+            <div class="dropdown-divider bg-secondary"></div>
+            <br>
             <div class="row">
                 <div class="col-12" style="text-align:center;">
-                    <ul>
-                        <li v-for="post in posts" style="list-style:none;">
-                            <h3><b>{{ post.name }}</b></h3>
-                        </li>
-                    </ul>
+                    <h3>City Info</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <h5>Name:</h5>
+                </div>
+                <div class="col-8 offset-1">
+                    <h5>{{ posts.name }}</h5>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <h5>Weather:</h5>
+                </div>
+                <div class="col-8 offset-1">
+                    <h5>{{ posts.weather[0].main }}</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <h5>Temperature:</h5>
+                </div>
+                <div class="col-8 offset-1">
+                    <h5>{{ posts.main.temp }} ºKelvin</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <h5>Humidity:</h5>
+                </div>
+                <div class="col-8 offset-1">
+                    <h5>{{ posts.main.humidity }}%</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 offset-1">
+                    <h5>Wind:</h5>
+                </div>
+                <div class="col-8 offset-1">
+                    <h5>{{ posts.wind.speed }}km/h</h5>
                 </div>
             </div>
         </section> 
-    <!-- <ul v-if="posts && posts.length">
-        <li v-for="post of posts">
-            <p><strong>{{post.title}}</strong></p>
-            <p>{{post.body}}</p>
-        </li>
-    </ul> -->
     </div>
 </template>
 
@@ -51,35 +88,31 @@ export default {
         return {
             posts: [],
             errors: [],
-            cityName: "",
-            city: ""
+            cityName: ""
         }
     },
-    // methods: {
-    //     findCity: function(){
-    //         this.cityName = this.city;
-    //     }
-    // },
+    methods: {
+        findCity: function(){
+            axios.get("http://api.openweathermap.org/data/2.5/weather?q="+ this.cityName +"&?units=metric&APPID=9788b3a9af1cfc6b792c28f70bea4579")
+            .then(response => {
+                // JSON responses are automatically parsed.
+                this.posts = response.data
+            })
+                .catch(e => {
+                this.errors.push(e)
+            })
+        }
+    },
 
-  // Fetches posts when the component is created.
     created() {
-    axios.get("http://api.openweathermap.org/data/2.5/weather?q=London&?units=metric&APPID=9788b3a9af1cfc6b792c28f70bea4579")
-    .then(response => {
-        // JSON responses are automatically parsed.
-        this.posts = response.data
-    })
-        .catch(e => {
-        this.errors.push(e)
-    })
-
-    // async / await version (created() becomes async created())
-    //
-    // try {
-    //   const response = await axios.get(`http://jsonplaceholder.typicode.com/posts`)
-    //   this.posts = response.data
-    // } catch (e) {
-    //   this.errors.push(e)
-    // }
-  }
+        axios.get("http://api.openweathermap.org/data/2.5/weather?q=Granada&?units=metric&APPID=9788b3a9af1cfc6b792c28f70bea4579")
+        .then(response => {
+            // JSON responses are automatically parsed.
+            this.posts = response.data
+        })
+            .catch(e => {
+            this.errors.push(e)
+        })
+    }
 }
 </script>

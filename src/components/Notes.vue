@@ -192,24 +192,15 @@
                                                         <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)">Low</button>
                                                         <span>&nbsp;</span>
 
-                                                        <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
-                                                        <span v-else class="text-primary"> Low </span> -->
-
                                                         <!-- MEDIUM -->
                                                         <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
                                                         <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
                                                         <span>&nbsp;</span>
 
-                                                        <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
-                                                        <span v-else class="text-warning"> Medium </span> -->
-
                                                         <!-- HIGH -->
                                                         <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High</button>
                                                         <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High</button>
                                                         <span>&nbsp;</span>
-
-                                                        <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
-                                                        <span v-else class="text-danger"> High </span> -->
                                                     </span>
                                                     <span> | Date: {{ task.date }} </span>
                                                 </small>

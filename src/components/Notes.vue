@@ -1,7 +1,7 @@
 <template>
     <div class="notes">
 
-        <!-- TASKS LAYOUT ORIGNAL -->
+        <!-- TASKS ORIGINAL LAYOUT -->
         <!-- <ul>
             <li v-for="task in tasks">
                 <h3>{{ task.order }}</h3>
@@ -79,7 +79,6 @@
                                             <div class="row">
                                                 <!-- ORDER -->
                                                 <!-- VARIABLE {{ task.order }} -->
-                                                    <!-- <del>{{ task.order }}</del> -->
                                                 <div>
                                                     <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
                                                     <h3 v-else>{{ task.order }}</h3>
@@ -97,24 +96,15 @@
                                                         <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToLow(task)"><img src="../assets/down.svg" alt="" height="11px" width="auto">Low</button>
                                                         <span>&nbsp;</span>
 
-                                                        <!-- <span v-if="task.priority == 'Low'" class="bg-primary text-white" style="padding: 0 2px; border:">Low</span>
-                                                        <span v-else class="text-primary"> Low </span> -->
-
                                                         <!-- MEDIUM -->
                                                         <button v-if="task.priority == 'Medium'" type="button" class="btn btn-warning btn-sm">Medium</button>
                                                         <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToMedium(task)">Medium</button>
                                                         <span>&nbsp;</span>
 
-                                                        <!-- <span v-if="task.priority == 'Medium'" class="bg-warning text-white" style="padding: 0 2px;">Medium</span>
-                                                        <span v-else class="text-warning"> Medium </span> -->
-
                                                         <!-- HIGH -->
                                                         <button v-if="task.priority == 'High'" type="button" class="btn btn-danger btn-sm">High<img src="../assets/up.svg" alt="" height="11px" width="auto"></button>
                                                         <button v-else type="button" class="btn btn-secondary btn-sm" v-on:click="changeToHigh(task)">High<img src="../assets/up.svg" alt="" height="11px" width="auto"></button>
                                                         <span>&nbsp;</span>
-
-                                                        <!-- <span v-if="task.priority == 'High'" class="bg-danger text-white" style="padding: 0 2px;">High</span>
-                                                        <span v-else class="text-danger"> High </span> -->
                                                     </span>
                                                     <span>&nbsp;&nbsp;<img src="../assets/watch.svg" alt="" height="20px" width="auto"> Date: {{ task.date }} </span>
                                                 </small>
@@ -174,7 +164,6 @@
                                             <div class="row">
                                                 <!-- ORDER -->
                                                 <!-- VARIABLE {{ task.order }} -->
-                                                    <!-- <del>{{ task.order }}</del> -->
                                                 <div>
                                                     <h3 v-if="task.status" class="text-success">{{ task.order }}</h3>
                                                     <h3 v-else>{{ task.order }}</h3>
@@ -242,27 +231,15 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <ul>
-                        <li v-for="task in tasks" style="list-style:none;">
+                        <li v-for="task in tasks" v-bind:key="task" style="list-style:none;">
                             <h3 v-if="task.status">{{ task.order }}</h3>
-                            <!-- <p>Priority: {{ auxTask.priority }}</p>
-                            <p>Date: {{ auxTask.date }}</p>
-                            <p>Status: 
-                                <span v-if="auxTask.status">Completed</span>
-                                <span v-else>Not Completed</span>
-                            </p> -->
                         </li>
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <ul>
-                        <li v-for="task in tasks" style="list-style:none;">
+                        <li v-for="task in tasks" v-bind:key="task" style="list-style:none;">
                             <h3 v-if="task.status == false">{{ task.order }}</h3>
-                            <!-- <p>Priority: {{ auxTask.priority }}</p>
-                            <p>Date: {{ auxTask.date }}</p>
-                            <p>Status: 
-                                <span v-if="auxTask.status">Completed</span>
-                                <span v-else>Not Completed</span>
-                            </p> -->
                         </li>
                     </ul>
                 </div>
@@ -303,6 +280,7 @@
         data: function() {
             return{
                 tasks: [
+                    // EXAMPLE DATA
                     // {
                     //     order: "Take the dog out",
                     //     priority: "High",
@@ -318,14 +296,15 @@
                 ],
                 textNewTask: "",
                 textFindTask: "",
-                checkedStatus: [],
+                checkedStatus: [], // USED FOR THE CHECKBOX, NOT USED AT THE MOMENT
                 auxTasks: [],
                 priorityTasks: [],
                 show: true
             }
         },
         methods: {
-            newTask: function(event){
+            // MAKE A NEW TASK
+            newTask: function(){
                 if(this.textNewTask != ""){
                     var order = this.textNewTask;
                     var date = new Date().toLocaleString(); // .toLocaleString()
@@ -334,18 +313,19 @@
                     this.tasks.push({order, date, priority, status});
                 }
                 document.getElementById("newTaskOrder").value = "";
+            },
 
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
-            },
-            findTask: function(event){
-                if(this.textFindTask != ""){
-                    var findOrder = this.textFindTask;
-                    return this.tasks.filter((findOrder)=>{
-                        return this.tasks.order.indexOf(findOrder) > -1;
-                    });
-                }
-            },
+            // FIND ALL TASKS THAT CONTAIN THE ENTERED TEXT, BETTER USE THE COMPUTED OPTION
+            // findTask: function(event){
+            //     if(this.textFindTask != ""){
+            //         var findOrder = this.textFindTask;
+            //         return this.tasks.filter((findOrder)=>{
+            //             return this.tasks.order.indexOf(findOrder) > -1;
+            //         });
+            //     }
+            // },
+
+            // RETURN ALL THE INCOMPLETED TASKS
             taskToDo: function(){
                 var count = 0;
                 for(let i=0; i<this.tasks.length; i++){
@@ -354,57 +334,51 @@
                     }
                 }
                 return count;
-            }, 
+            },
+
+            // DELETE THE SELECTED TASKS
             deleteTask: function(task){
                 for(let i=0; i<this.tasks.length; i++){
                     if(this.tasks[i] == task){
                         this.tasks.splice(i, 1);
                     }
                 }
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
+
+            // CHANGE THE PRIORITY OF THE SELECTED TASKS TO LOW
             changeToLow: function(task){
                 task.priority = "Low";
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
+
+            // CHANGE THE PRIORITY OF THE SELECTED TASKS TO MEDIUM
             changeToMedium: function(task){
                 task.priority = "Medium";
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
+
+            // CHANGE THE PRIORITY OF THE SELECTED TASKS TO HIGH
             changeToHigh: function(task){
                 task.priority = "High";
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
+
+            // CHANGE THE STATUS OF THE SELECTED TASKS TO COMPLETE
             changeToComplete: function(task){
                 task.status = true;
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
+
+            // CHANGE THE STATUS OF THE SELECTED TASKS TO INCOMPLETE
             changeToIncomplete: function(task){
                 task.status = false;
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             },
+
+            // DELETE ALL COMPLETED TASKS
             deleteCompletedTasks: function(){
-                for(let i=this.tasks.length-1; i=>0; i--){
+                for(let i=this.tasks.length-1; i>0; i--){
                     if(this.tasks[i].status == true){
                         this.tasks.splice(i, 1);
                     }
                 }
-
-                localStorage.removeItem("tasks");
-                localStorage.setItem("tasks", JSON.stringify(this.tasks));
             }
+
             // minutes: function(date){
             //     var now = new Date();
             //     var diffMs;
@@ -421,26 +395,30 @@
             // }
         },
         computed: {
-            checkedTask: function(){
-                this.auxTasks = [];
-                for(let j=0; j<this.checkedStatus.length; j++){
-                    if(this.checkedStatus[j] == "Completed"){
-                        for(let i=0; i<this.tasks.length; i++){
-                            if(this.tasks[i].status == true){
-                                this.auxTasks.push(this.tasks[i]);
-                            }
-                        }
-                    }
-                    if(this.checkedStatus[j] == "Incompleted"){
-                        for(let i=0; i<this.tasks.length; i++){
-                            if(this.tasks[i].status == false){
-                                this.auxTasks.push(this.tasks[i]);
-                            }
-                        }
-                    }
-                }
-                return this.auxTasks;
-            },
+            // USED FOR CHOOSE COMPLETED OR INCOMPLETED TASKS, DEPENDS ON THE CHECKBOXX
+            // NOT USED AT THE MOMENT
+            // checkedTask: function(){
+            //     this.auxTasks = [];
+            //     for(let j=0; j<this.checkedStatus.length; j++){
+            //         if(this.checkedStatus[j] == "Completed"){
+            //             for(let i=0; i<this.tasks.length; i++){
+            //                 if(this.tasks[i].status == true){
+            //                     this.auxTasks.push(this.tasks[i]);
+            //                 }
+            //             }
+            //         }
+            //         if(this.checkedStatus[j] == "Incompleted"){
+            //             for(let i=0; i<this.tasks.length; i++){
+            //                 if(this.tasks[i].status == false){
+            //                     this.auxTasks.push(this.tasks[i]);
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     return this.auxTasks;
+            // },
+
+            // FIND ALL TASKS THAT CONTAIN THE ENTERED TEXT
             filteredTask: function() {
                 if(this.textFindTask == "" || this.textFindTask == " "){
                     return "";
@@ -450,6 +428,8 @@
                     }); 
                 }              
             },
+
+            // ORDER YOUR TASKS BY THE PRIORITY OF THEM (HIGH - MEDIUM - LOW)
             priorityFilter: function(){
                 this.priorityTasks = [];
                 for(let i=0; i<this.tasks.length; i++){
@@ -469,29 +449,20 @@
                 }
                 return this.priorityTasks;
             }
-            
-                // filteredHigh: function (){
-                //     return this.tasks.filter(task => {
-                //         return task.priority.indexOf("High") > -1;
-                //     });
-                // },
-                // filteredMedium: function (){
-                //     return this.tasks.filter(task => {
-                //         return task.priority.indexOf("Medium") > -1;
-                //     });
-                // },
-                // filteredLow: function (){
-                //     return this.tasks.filter(task => {
-                //         return task.priority.indexOf("Low") > -1;
-                //     });
-                // }
         },
+
+        // START MOUNTING YOUR LOCALSTORAGE, IF THE LOCALSTORAGE IS NOT NULL
         mounted: function(){
             // this.tasks = JSON.parse(localStorage.getItem("tasks"));
             if (localStorage.getItem("tasks") != null) {
 				this.tasks = JSON.parse(localStorage.getItem("tasks"));
 			}
-        }   
+        },
+
+        // UPDATE YOUR LOCAL STORAGE AFTER EVERY SINGLE CHANGE
+        updated: function(){
+            localStorage.setItem("tasks",JSON.stringify(this.tasks));
+        }  
     }
 </script>
 

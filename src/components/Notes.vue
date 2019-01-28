@@ -312,7 +312,7 @@
                     var status = false;
                     this.tasks.push({order, date, priority, status});
                 }
-                document.getElementById("newTaskOrder").value = "";
+                this.textNewTask = "";
             },
 
             // FIND ALL TASKS THAT CONTAIN THE ENTERED TEXT, BETTER USE THE COMPUTED OPTION

@@ -487,7 +487,10 @@
                 // }
         },
         mounted: function(){
-            this.tasks = JSON.parse(localStorage.getItem("tasks"));
+            // this.tasks = JSON.parse(localStorage.getItem("tasks"));
+            if (localStorage.getItem("tasks") != null) {
+				this.tasks = JSON.parse(localStorage.getItem("tasks"));
+			}
         }   
     }
 </script>

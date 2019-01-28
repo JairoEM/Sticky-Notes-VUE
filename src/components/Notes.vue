@@ -372,7 +372,7 @@
 
             // DELETE ALL COMPLETED TASKS
             deleteCompletedTasks: function(){
-                for(let i=this.tasks.length-1; i>0; i--){
+                for(let i=this.tasks.length-1; i=>0; i--){
                     if(this.tasks[i].status == true){
                         this.tasks.splice(i, 1);
                     }
